@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($u = \\(Select-String -Path .env -Pattern '^DATABASE_URL=\"\\([^\"]+\\)\"'\\).Matches[0].Groups[1].Value; $pw = \\([uri]$u\\).UserInfo.Split\\(':'\\)[1]; $pw = [uri]::UnescapeDataString\\($pw\\); docker run -d --name pakistan-travel-db -e POSTGRES_PASSWORD=$pw -e POSTGRES_DB=pakistan_travel -p 5432:5432 postgres:16)",
+      "PowerShell(npm run dev)",
+      "PowerShell($env:NEXTAUTH_URL = 'http://localhost:3001'; npx next dev -p 3001)",
+      "PowerShell(Get-ChildItem src -Recurse -File | ForEach-Object { \"{0,6} {1}\" -f $_.Length, $_.FullName.Replace\\(\\(Resolve-Path src\\).Path,''\\) }; Get-Content tailwind.config.ts, next.config.mjs)",
+      "Bash(mkdir -p \"/c/Users/USER/AppData/Local/Temp/claude/c--Users-USER-Downloads-Personal-Projects-pakistan-travel-platform-pakistan-travel-platform/17a67b3f-a787-49cc-b5c4-a22b289c305a/scratchpad/src-backup\")",
+      "Bash(cp -r src/. \"/c/Users/USER/AppData/Local/Temp/claude/c--Users-USER-Downloads-Personal-Projects-pakistan-travel-platform-pakistan-travel-platform/17a67b3f-a787-49cc-b5c4-a22b289c305a/scratchpad/src-backup/\")",
+      "Bash(cp tailwind.config.ts \"/c/Users/USER/AppData/Local/Temp/claude/c--Users-USER-Downloads-Personal-Projects-pakistan-travel-platform-pakistan-travel-platform/17a67b3f-a787-49cc-b5c4-a22b289c305a/scratchpad/\")",
+      "PowerShell(npx tsc --noEmit; \"TSC EXIT $LASTEXITCODE\"; npx next lint; \"LINT EXIT $LASTEXITCODE\")",
+      "PowerShell($edge = @\\(\"${env:ProgramFiles\\(x86\\)}\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\", \"$env:ProgramFiles\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\"\\) | Where-Object { Test-Path $_ } | Select-Object -First 1; $edge; foreach \\($p in '/', '/hotels', '/login'\\) { $r = Invoke-WebRequest \"http://localhost:3001$p\" -UseBasicParsing -TimeoutSec 180; \"$p $\\($r.StatusCode\\)\" })",
+      "PowerShell(docker exec pakistan-travel-db psql -U postgres -d pakistan_travel -c 'select email, name, role from \"User\" order by \"createdAt\"')",
+      "Bash(docker exec *)",
+      "PowerShell(npm run db:seed:users; npx tsc --noEmit; \"TSC $LASTEXITCODE\"; npx next lint)",
+      "PowerShell(git config user.name)",
+      "PowerShell(git config user.email)"
+    ]
+  }
+}

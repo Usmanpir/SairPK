@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 60 20% 99%;
+    --foreground: 162 32% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 162 32% 9%;
+    --ink: 164 42% 7%; /* near-black pine — dark hero & footer surfaces */
+    --ink-soft: 163 30% 13%;
+    --primary: 161 74% 27%; /* deep emerald — evokes the Pakistani flag green */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 39 92% 54%; /* warm gold accent for northern-areas imagery */
+    --secondary-foreground: 30 30% 10%;
+    --muted: 150 16% 95.5%;
+    --muted-foreground: 160 8% 40%;
+    --accent: 154 52% 95%;
+    --accent-foreground: 161 74% 20%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 152 62% 36%;
+    --success-foreground: 0 0% 100%;
+    --border: 150 14% 89%;
+    --ring: 161 74% 27%;
+    --radius: 0.875rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background font-sans text-foreground;
+    font-feature-settings: 'ss01', 'cv11';
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply tracking-tight;
+  }
+  ::selection {
+    @apply bg-primary/15 text-foreground;
+  }
+  input[type='date']::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.55;
+  }
+  input[type='number']::-webkit-inner-spin-button {
+    opacity: 0.4;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .bg-grid {
+    background-image: linear-gradient(hsl(var(--foreground) / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--foreground) / 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .bg-grid-light {
+    background-image: linear-gradient(hsl(0 0% 100% / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(0 0% 100% / 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 40%, transparent);
+  }
+  .text-gradient-gold {
+    background: linear-gradient(100deg, hsl(42 96% 70%), hsl(35 92% 55%) 55%, hsl(28 90% 60%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .skeleton {
+    background: linear-gradient(90deg, hsl(var(--muted)) 0%, hsl(150 14% 91%) 50%, hsl(var(--muted)) 100%);
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
