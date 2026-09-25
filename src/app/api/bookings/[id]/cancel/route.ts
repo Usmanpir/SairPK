@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
-import { nightsBetween } from '@/lib/pricing';
+import { holdsInventory, releaseBookingInventory } from '@/lib/bookings';
 
 type TxClient = Prisma.TransactionClient;
 
@@ -10,24 +10,11 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
     await prisma.$transaction(async (tx: TxClient) => {
       const booking = await tx.booking.findUnique({ where: { id: params.id }, include: { items: true } });
       if (!booking) throw new Error('NOT_FOUND');
-      if (booking.status === 'CANCELLED') return;
+      // Already cancelled/refunded/expired: its inventory was released before, don't release it twice.
+      if (!holdsInventory(booking.status)) return;
 
       // Release held inventory for every night of every item back to availability.
-      for (const item of booking.items) {
-        if (!item.roomId) continue;
-        const nights = nightsBetween(item.checkIn, item.checkOut);
-        for (const night of nights) {
-          const existing = await tx.roomAvailability.findUnique({
-            where: { roomId_date: { roomId: item.roomId, date: night } }
-          });
-          if (existing) {
-            await tx.roomAvailability.update({
-              where: { id: existing.id },
-              data: { unitsAvailable: existing.unitsAvailable + 1 }
-            });
-          }
-        }
-      }
+      await releaseBookingInventory(tx, booking.items);
 
       await tx.booking.update({
         where: { id: params.id },

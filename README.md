@@ -38,8 +38,11 @@ Visit `http://localhost:3000`. Demo accounts created by the seed script:
 
 | Role   | Email                     | Password         |
 |--------|---------------------------|-------------------|
-| Admin  | admin@sairpakistan.com    | Admin@12345       |
+| Super Admin | admin@sairpakistan.com | Admin@12345     |
+| Admin  | ops@sairpakistan.com      | Ops@12345         |
 | Customer | demo@sairpakistan.com   | Customer@12345    |
+
+(The full list, including partner roles, is in `src/lib/demo-accounts.ts`.)
 
 Payments run against `MockPaymentProvider` (`src/lib/payments/mock-provider.ts`)
 by default, so the full booking flow works with zero payment-gateway setup —
@@ -65,6 +68,31 @@ every charge succeeds instantly. No real money moves.
 
 Cancellation (`POST /api/bookings/[id]/cancel`) releases held inventory back
 to `RoomAvailability`.
+
+## Management dashboard (`/admin`)
+
+Super Admin and Admin accounts land on `/admin` after logging in (via
+`/post-login`) instead of the traveller site. Access is enforced three times:
+`src/middleware.ts` (JWT role), the `/admin` layout and pages, and every
+`/api/admin/*` handler — the last two re-read role and `isActive` from the
+database (`src/lib/admin/guard.ts`) so a demoted or suspended admin loses access
+immediately.
+
+| Section | What it does |
+|---|---|
+| Overview | Net revenue, amount awaiting payment, bookings by status, recent bookings and activity |
+| Bookings | Search/filter; edit guest details; change status (closing statuses release inventory; closed bookings can't be reopened) |
+| Payments | Ledger with totals; record offline payments, correct amounts, partial/full refunds (from a booking's page) — keeps booking status and invoice in sync |
+| Accounts | Create accounts with any role, edit details, reset passwords, suspend/reactivate |
+| Hotels | Verify/suspend listings, assign a hotel manager |
+| Records | Audit log of every management action (`AuditLog`), and all issued invoices |
+
+Admins can manage every account below admin level; only a Super Admin can
+create or edit Admin/Super Admin accounts (`canManageRole` in `src/lib/roles.ts`).
+Nobody can change their own role or suspend themselves.
+
+After pulling this change, run `npm run db:push` — it adds
+`Payment.refundedAmount`, `Payment.notes` and the `AuditLog` table.
 
 ## Project structure
 

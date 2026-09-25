@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db';
 import { initiatePaymentSchema } from '@/lib/validation/booking';
 import { getPaymentProvider } from '@/lib/payments/mock-provider';
 import { toNumber } from '@/lib/pricing';
+import { nextInvoiceNo } from '@/lib/bookings';
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -54,8 +55,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: result.failureReason ?? 'Payment failed. Please try another method.' }, { status: 402 });
   }
 
-  const invoiceCount = await prisma.invoice.count();
-  const invoiceNo = `INV-${new Date().getFullYear()}-${String(invoiceCount + 1).padStart(6, '0')}`;
+  const invoiceNo = await nextInvoiceNo(prisma);
 
   await prisma.$transaction([
     prisma.payment.upsert({

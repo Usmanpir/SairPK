@@ -15,7 +15,23 @@
       "PowerShell(npm run db:seed:users; npx tsc --noEmit; \"TSC $LASTEXITCODE\"; npx next lint)",
       "PowerShell(git config user.name)",
       "PowerShell(git config user.email)",
-      "PowerShell(git ls-remote origin)"
+      "PowerShell(git ls-remote origin)",
+      "PowerShell(npx prisma validate)",
+      "PowerShell(npx prisma generate)",
+      "PowerShell(npx tsc --noEmit -p .)",
+      "PowerShell(npx next lint --dir src 2>&1)",
+      "PowerShell(npx prisma db push --skip-generate 2>&1)",
+      "PowerShell(npm run build 2>&1)",
+      "PowerShell($env:PORT='3100'; $env:NEXTAUTH_URL='http://localhost:3100'; npx next start -p 3100)",
+      "PowerShell(npm run db:seed:users 2>&1)",
+      "PowerShell(node \"C:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-USER-Downloads-Personal-Projects-pakistan-travel-platform-pakistan-travel-platform\\\\cd17a805-7f38-40f9-913c-1376a7a0d94f\\\\scratchpad\\\\smoke.mjs\")",
+      "PowerShell($r = Invoke-WebRequest -Uri http://localhost:3100/post-login -MaximumRedirection 0 -SkipHttpErrorCheck -ErrorAction SilentlyContinue 2>$null; if \\(-not $r\\) { $r = try { Invoke-WebRequest -Uri http://localhost:3100/post-login -MaximumRedirection 0 -UseBasicParsing } catch { $_.Exception.Response } }; $r.StatusCode; $r.Headers.Location)",
+      "Bash(curl -s -i http://localhost:3100/post-login)",
+      "Bash(curl -s http://localhost:3100/post-login)",
+      "PowerShell(Remove-Item \"src/app/post-login/page.tsx\" -Confirm:$false)",
+      "PowerShell($env:NEXTAUTH_URL='http://localhost:3100'; npx next start -p 3100)",
+      "PowerShell(npm run db:seed 2>&1 | Select-Object -Last 4; \\(Get-Content \"C:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-USER-Downloads-Personal-Projects-pakistan-travel-platform-pakistan-travel-platform\\\\cd17a805-7f38-40f9-913c-1376a7a0d94f\\\\scratchpad\\\\smoke.mjs\" -Raw\\).Replace\\(\"phone: '+923001234567', role: 'TOUR_GUIDE'\", \"phone: '+9230' + String\\(Date.now\\(\\)\\).slice\\(-8\\), role: 'TOUR_GUIDE'\"\\) | Set-Content -Encoding utf8 \"C:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-USER-Downloads-Personal-Projects-pakistan-travel-platform-pakistan-travel-platform\\\\cd17a805-7f38-40f9-913c-1376a7a0d94f\\\\scratchpad\\\\smoke.mjs\"; node \"C:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-USER-Downloads-Personal-Projects-pakistan-travel-platform-pakistan-travel-platform\\\\cd17a805-7f38-40f9-913c-1376a7a0d94f\\\\scratchpad\\\\smoke.mjs\")",
+      "PowerShell(Start-Sleep 8; Get-Content \"C:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-USER-Downloads-Personal-Projects-pakistan-travel-platform-pakistan-travel-platform\\\\cd17a805-7f38-40f9-913c-1376a7a0d94f\\\\tasks\\\\b5vxu13lg.output\"; try { \\(Invoke-WebRequest http://localhost:3000/login -UseBasicParsing -TimeoutSec 90\\).StatusCode } catch { $_.Exception.Message })"
     ]
   }
 }

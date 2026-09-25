@@ -45,6 +45,7 @@ model User {
   reviews      Review[]
   wishlist     Wishlist[]
   passwordResets PasswordResetToken[]
+  auditLogs    AuditLog[]     @relation("AuditActor")
 
   @@index([role])
 }
@@ -404,6 +405,8 @@ model Payment {
   providerTxnId String? // transaction id returned by the payment gateway
   providerRaw   Json? // raw gateway response, for audit/debugging
   refundStatus  String?
+  refundedAmount Decimal      @default(0) @db.Decimal(10, 2)
+  notes         String?       @db.Text // internal notes from the management dashboard
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -419,4 +422,23 @@ model Invoice {
   issuedAt    DateTime @default(now())
 
   booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Management audit trail ----------
+
+// One row per change made from the management dashboard, so admins can see
+// who changed an account, booking or payment and when.
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String // e.g. "user.create", "booking.status", "payment.update"
+  entityType String // "User" | "Booking" | "Payment" | "Hotel"
+  entityId   String
+  summary    String
+  createdAt  DateTime @default(now())
+
+  actor User? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
 }

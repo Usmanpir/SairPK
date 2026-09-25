@@ -27,7 +27,8 @@ function GoogleIcon() {
 
 function LoginForm() {
   const params = useSearchParams();
-  const callbackUrl = params.get('callbackUrl') ?? '/';
+  // With no explicit destination, /post-login routes management accounts to /admin.
+  const callbackUrl = params.get('callbackUrl') ?? '/post-login';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);

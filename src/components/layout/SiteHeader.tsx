@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
-import { LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, LogOut, Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 import { Button } from '@/components/ui/button';
+import { isManagementRole } from '@/lib/roles';
 import { cn } from '@/lib/utils';
 
 const NAV = [
@@ -34,6 +35,7 @@ export function SiteHeader() {
   useEffect(() => setOpen(false), [pathname]);
 
   const initial = (session?.user?.name ?? session?.user?.email ?? '?').charAt(0).toUpperCase();
+  const isManager = isManagementRole(session?.user?.role);
 
   return (
     <header
@@ -71,6 +73,13 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           {session?.user ? (
             <div className="hidden items-center gap-2 md:flex">
+              {isManager && (
+                <Button asChild size="sm" variant={overHero ? 'secondary' : 'default'} className="rounded-full px-4">
+                  <Link href="/admin">
+                    <LayoutDashboard className="h-4 w-4" /> Management
+                  </Link>
+                </Button>
+              )}
               <span
                 className={cn(
                   'flex items-center gap-2 rounded-full py-1 pl-1 pr-3 text-sm font-medium',
@@ -139,9 +148,18 @@ export function SiteHeader() {
             ))}
             <div className="mt-2 border-t border-border pt-4">
               {session?.user ? (
-                <Button variant="outline" className="w-full" onClick={() => signOut({ callbackUrl: '/' })}>
-                  <LogOut className="h-4 w-4" /> Sign out
-                </Button>
+                <div className="grid gap-2">
+                  {isManager && (
+                    <Button asChild>
+                      <Link href="/admin">
+                        <LayoutDashboard className="h-4 w-4" /> Management dashboard
+                      </Link>
+                    </Button>
+                  )}
+                  <Button variant="outline" className="w-full" onClick={() => signOut({ callbackUrl: '/' })}>
+                    <LogOut className="h-4 w-4" /> Sign out
+                  </Button>
+                </div>
               ) : (
                 <div className="grid grid-cols-2 gap-2">
                   <Button asChild variant="outline">
