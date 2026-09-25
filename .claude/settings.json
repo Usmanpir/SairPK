@@ -14,7 +14,8 @@
       "Bash(docker exec *)",
       "PowerShell(npm run db:seed:users; npx tsc --noEmit; \"TSC $LASTEXITCODE\"; npx next lint)",
       "PowerShell(git config user.name)",
-      "PowerShell(git config user.email)"
+      "PowerShell(git config user.email)",
+      "PowerShell(git ls-remote origin)"
     ]
   }
 }
